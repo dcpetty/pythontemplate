@@ -11,9 +11,9 @@ These steps are based on Github account `dcpetty` with private e-mail address `d
 - `git clone` the repository into the parent directory of the `newpython` local branch.
   - Use `git clone git@github.com:dcpetty/pythontemplate.git` from the SSH tab of the `<> Code` button directly. *Or&hellip;* 
   - Use `git clone https://github.com/dcpetty/newpython.git` from the HTTPS tab of the `<> Code` button and:
-   - Change the `.git/config` `url` of the `newpython` local branch as per [`https://gist.github.com/jexchan/2351996`](https://gist.github.com/jexchan/2351996) as follows:
-    - from: `url = https://github.com/dcpetty/newpython.git`
-    - to: `url = git@github.com:dcpetty/newpython.git`
+    - Change the `.git/config` `url` of the `newpython` local branch as per [`https://gist.github.com/jexchan/2351996`](https://gist.github.com/jexchan/2351996) as follows:
+      - from: `url = https://github.com/dcpetty/newpython.git`
+      - to: `url = git@github.com:dcpetty/newpython.git`
 - This SSH configuration is based on having followed the *[Generating a new SSH key and adding it to the ssh-agent](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)* documentation. This presupposes that `~/.ssh/` contains the files (for example) `id_rsa_dcp` and `id_rsa_dcp.pub` and that `~/.ssh/config` then contains the following:
 
 ```
