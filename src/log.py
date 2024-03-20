@@ -22,7 +22,7 @@ __email__ = "dcp@acm.org"
 __status__ = "Development"
 
 path = globals().get('path')    # Initialize global path to temporary log.
-
+fix = lambda prefix: f'{prefix if prefix else "PREFIX"}-'
 
 def log(name, prefix=None, level=logging.INFO):
     """If logger with name exists, return it with updated FileStream with new
@@ -46,7 +46,7 @@ def log(name, prefix=None, level=logging.INFO):
 
     # Create file handler which logs messages at level.
     if new_file:
-        fd, path = tempfile.mkstemp('.log', f'{prefix if prefix else "PREFIX"}-')
+        fd, path = tempfile.mkstemp('.log', fix(prefix))
 
     fh = logging.StreamHandler(open(path, 'a'))
     fh.setLevel(logging.DEBUG)
@@ -74,14 +74,14 @@ def log(name, prefix=None, level=logging.INFO):
 def update_prefix(logger, prefix):
     """Update logger FileStream with new temp log file, if prefix changed."""
     global path
-    if prefix:
-        for handler in logger.handlers:
-            dirname, basename = os.path.split(handler.stream.name)
-            # If StreamHandler name is '*.log' but with a different prefix,
-            # replace stream with new temp file descriptor and close old one.
-            if basename.endswith('.log') and not basename.startswith(prefix):
-                fd, path = tempfile.mkstemp('.log', f'{prefix}-')
-                handler.setStream(open(path, 'a')).close()
+    fixed = fix(prefix)
+    for handler in logger.handlers:
+        dirname, basename = os.path.split(handler.stream.name)
+        # If StreamHandler name is '*.log' but with a different prefix,
+        # replace stream with new temp file descriptor and close old one.
+        if basename.endswith('.log') and not basename.startswith(fixed):
+            fd, path = tempfile.mkstemp('.log', fixed)
+            handler.setStream(open(path, 'a')).close()
 
 
 def log_path():
@@ -96,6 +96,8 @@ if __name__ == '__main__':
     logger = log(__name__)
     logger.info(log_path())
     logger = log(__name__, 'new-name', logging.DEBUG)
+    logger.info(log_path())
+    logger = log(__name__, level=logging.DEBUG)
     logger.info(log_path())
     logger.debug('D: SPAM')
     logging.debug('D: SPAM')
