@@ -8,15 +8,21 @@ pythontemplate.py is a template that includes argparse.ArgumentParser-style
 arguments in all their various forms.
 """
 
-__author__ = "David C. Petty"
-__copyright__ = "Copyright 2020, David C. Petty"
-__license__ = "https://creativecommons.org/licenses/by-nc-sa/4.0/"
-__version__ = "0.0.2"
-__maintainer__ = "David C. Petty"
-__email__ = "david_petty@psbma.org"
-__status__ = "Hack"
+__version__ = "0.0.3"
 
-import argparse, os, sys
+__all__ = ["main", ]
+__author__ = "David C. Petty"
+__copyright__ = "Copyright 2024, David C. Petty"
+__credits__ = ["David C. Petty", ]
+__license__ = "https://creativecommons.org/licenses/by-nc-sa/4.0/"
+__maintainer__ = "David C. Petty"
+__email__ = "dcp@acm.org"
+__status__ = "Development"
+
+import argparse, log, os, sys
+
+# Set up logging.
+logger = log.log(__name__, 'template')
 
 
 class Parser(argparse.ArgumentParser):
@@ -50,23 +56,26 @@ def main(argv):
         ('-v', '--verbose', 'store_true', 'VERBOSE', False,
          'echo status information', ),
     ]
+
     # Add optional arguments with values.
     for c1, c2, a, v, d, h in arguments:
         parser.add_argument(c1, c2, action=a, dest=v, default=d, help=h,)
+
     # Add positional arguments. 'NAME' is both the string and the variable.
     parser.add_argument("REQUIRED", help="required argument")
     parser.add_argument("OPTIONAL", nargs="*", help="optional arguments")
+
     # Parse arguments.
     pa = parser.parse_args(args=argv[1: ])
     if pa.ARG:
         os.environ['ARG'] = pa.ARG
-        print(f"ARG = {pa.ARG}")
+        logger.info(f"ARG = {pa.ARG}")
     if pa.MULT:
-        print(f"MULT= {pa.MULT}")
+        logger.info(f"MULT= {pa.MULT}")
     if pa.REQUIRED:
-        print(f"REQ = {pa.REQUIRED}")
+        logger.info(f"REQ = {pa.REQUIRED}")
     if pa.OPTIONAL:
-        print(f"OPT = {pa.OPTIONAL}")
+        logger.info(f"OPT = {pa.OPTIONAL}")
 
 
 if __name__ == '__main__':
@@ -76,6 +85,7 @@ if __name__ == '__main__':
         '__file__' not in globals()
     )
     if any((is_idle, is_pycharm, is_jupyter,)):
+        logger.info(f"logpath: {log.log_path()}")
         tests = [
             ['template.py', 'REQ', ],
             ['template.py', 'REQ', 'OPT1', ],
@@ -87,8 +97,7 @@ if __name__ == '__main__':
             ['template.py', '-?', ],
         ]
         for test in tests:
-            print(f"# {' '.join(test)}")
+            logger.info(f"# {' '.join(test)}")
             main(test)
-            print()
     else:
         main(sys.argv)
