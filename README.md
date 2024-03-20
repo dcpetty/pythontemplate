@@ -28,7 +28,7 @@ Host github.com
 ```
 
 - **Note**: for these configuration to work, the key will be added to the `ssh-agent`. Use `ssh-add -l` to see which keys have been added. When generating an SSH key, I do not use a passphrase. 
- - If you *do* use a passphrase on Mac OS, use `ssh-add -K ~/.ssh/id_rsa_dcp` (for example) to add it to the Apple keychain one time. You can add `ssh-add -A 2>/dev/null` to your Z-Shell resource file `~/.zshrc` on Mac OS to initialize `ssh-agent` in each Z-Shell without needing the passphrase.
+  - If you *do* use a passphrase on Mac OS, use `ssh-add -K ~/.ssh/id_rsa_dcp` (for example) to add it to the Apple keychain one time. You can add `ssh-add -A 2>/dev/null` to your Z-Shell resource file `~/.zshrc` on Mac OS to initialize `ssh-agent` in each Z-Shell without needing the passphrase.
 - Add the following to `.git/config` to associate commits with the correct account name:
 
 ```
